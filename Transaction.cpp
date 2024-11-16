@@ -3,7 +3,7 @@
 #include <sstream>
 
 
-Transaction::Transaction(std::string action, int amount) {
+Transaction::Transaction(std::string action, double amount) {
 	/*
 	basic constructor takes in action and amount
 	input validation in account class
@@ -12,7 +12,7 @@ Transaction::Transaction(std::string action, int amount) {
 	this->amount = amount;
 	this->date_time = std::chrono::system_clock::now();
 }
-Transaction:: Transaction(int amount) {
+Transaction:: Transaction(double amount) {
 	//this constructor only takes in the amount.
 	//if negative represents a withdrawl
 	//if postive represents a deposit
@@ -30,7 +30,7 @@ Transaction:: Transaction(int amount) {
 std::string Transaction::get_action() {
 	return action;
 }
-int Transaction::get_amount() {
+double Transaction::get_amount() {
 	return amount;
 }
 std::string Transaction::get_date_time() {
