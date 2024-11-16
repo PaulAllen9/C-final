@@ -1,26 +1,45 @@
-#pragma once
-#include <string>
+#include "Transaction.h"
+#include <iomanip>
+#include <sstream>
 
-#include <chrono>
-#include <ctime>
-class Transaction {
-private:
-  //will be either withdraw or deposit
-	std::string action;
-  //the amount of the transaction
-  //all deposits will be positive,
-  //all withdrawls should be negative
-	int amount;
 
-	//will provide the date_time in format 
-	//day_of_week, month, number_day, hour:minute:sec, year
-	std::chrono::time_point<std::chrono::system_clock> date_time;
+Transaction::Transaction(std::string action, int amount) {
+	/*
+	basic constructor takes in action and amount
+	input validation in account class
+	*/
+	this->action = action;
+	this->amount = amount;
+	this->date_time = std::chrono::system_clock::now();
+}
+Transaction:: Transaction(int amount) {
+	//this constructor only takes in the amount.
+	//if negative represents a withdrawl
+	//if postive represents a deposit
+	this->amount = amount;
+	if (amount > 0) {
+		this->action = "deposit";
+	}
+	else {
+		this->action = "withdrawl";
 
-public:
-	Transaction(std::string action, int amount);
-	Transaction(int amount);
-	std::string get_action();
-	int get_amount();
-	std::string get_date_time();
+	}
+	this->date_time = std::chrono::system_clock::now();
 
-};
+}
+std::string Transaction::get_action() {
+	return action;
+}
+int Transaction::get_amount() {
+	return amount;
+}
+std::string Transaction::get_date_time() {
+	std::time_t now_time = std::chrono::system_clock::to_time_t(date_time);
+	std::tm* tm_ptr = std::localtime(&now_time);
+
+
+	//converts time into specified format
+	std::ostringstream oss;
+	oss << std::put_time(tm_ptr, "%Y-%m-%d %H:%M:%S");
+	return oss.str();
+}
