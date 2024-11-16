@@ -10,7 +10,7 @@ private:
 	//the amount of the transaction
 	//all deposits will be positive,
 	//all withdrawls should be negative
-	int amount;
+	double amount;
 
 	//will provide the date_time in format 
 	//day_of_week, month, number_day, hour:minute:sec, year
@@ -20,7 +20,7 @@ public:
 	Transaction(std::string action, int amount);
 	Transaction(int amount);
 	std::string get_action();
-	int get_amount();
+	double get_amount();
 	std::string get_date_time();
 
 };
