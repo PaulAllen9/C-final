@@ -21,20 +21,28 @@ void Bank::load_accounts() {
 }
 //called in load_accounts
 void Bank::load_user_accounts() {
+	//some how load user accounts from txt file
 
 }
 //called in load_accounts
 void Bank::load_manager_accounts() {
+	//some how load manager accounts from txt file
 
 }
 /*At this point the start page will launch
 this provide options to login as a user or manager, create a user account, or exit the app*/
 void Bank::start_page() {
-	//generates prompt to sign in, create an account or exit
-	//please enter u to sign in as user
-	//please enter c to create an account
-	//please enter m to sign in as manager
-	//please enter e to exit
+	//will server as the hub for user interaction with the bank applicaiton
+	//will still need to add formatting to make the app look presentable
+	std::cout << "Welcome to the our bank, " << bank_name <<"!" << std::endl;
+	std::cout << "Functions:" << "Type to enact " << bank_name << std::endl;
+
+	std::cout << "To sign-in as user: " << "User" << std::endl;
+	std::cout << "To create a user account: " << "Create" << std::endl;
+	std::cout << "To sign-in as manager: " << "Manage" << std::endl;
+	std::cout << "To exit the applicaiton: " << "Exit" << std::endl;
+	std::string task1;
+	std::cin >> task1;
 
 
 	//sign-in either
@@ -58,6 +66,25 @@ void Bank::start_page() {
 
 	//exit call close_day()
 
+}
+
+void Bank::sign_in_user()
+{
+}
+
+void Bank::create_user()
+{
+}
+
+void Bank::sign_in_manager()
+{
+}
+
+void Bank::exit()
+{
+	close_day();
+	std::cout << "Thank you for using " << bank_name<<"," << std::endl;
+	std::cout << "Have a nice day!" << std::endl;
 }
 
 

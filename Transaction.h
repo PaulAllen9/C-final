@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <iomanip>
+#include <sstream>
+#include <iostream>
 
 #include <chrono>
 #include <ctime>
@@ -17,10 +20,12 @@ private:
 	std::chrono::time_point<std::chrono::system_clock> date_time;
 
 public:
+	Transaction();
 	Transaction(std::string action, int amount);
 	Transaction(int amount);
 	std::string get_action();
 	int get_amount();
 	std::string get_date_time();
+	void toString(std::string user);
 
 };

@@ -1,6 +1,5 @@
 #include "Transaction.h"
-#include <iomanip>
-#include <sstream>
+
 
 
 Transaction::Transaction(std::string action, int amount) {
@@ -42,4 +41,11 @@ std::string Transaction::get_date_time() {
 	std::ostringstream oss;
 	oss << std::put_time(tm_ptr, "%Y-%m-%d %H:%M:%S");
 	return oss.str();
+}
+
+void Transaction::toString(std::string user)
+{
+	std::string temp_str = user + ":\t" + get_date_time() + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
+
+	std::cout << temp_str << std::endl;
 }
