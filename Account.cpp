@@ -37,6 +37,11 @@ void Account::functions() {
 	std::cout << "Change last name: last " << std::endl;
 	std::cout << "Get Functions: Help " << std::endl;
 }
+int Account::get_account_number() {
+	return account_number;
+}
+
+
 void Account::setFname(std::string name) {
 	//changes the account first name
 	fname = name;

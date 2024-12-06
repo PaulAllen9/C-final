@@ -22,62 +22,107 @@ void Bank::load_accounts() {
 //called in load_accounts
 void Bank::load_user_accounts() {
 	//some how load user accounts from txt file
-
+	std::ifstream inputFile;
+	std::ofstream outputFile;
+	std::string line;
+	inputFile.open("user.txt");
+	while (!inputFile.eof()) {
+		getline(inputFile, line);
+		//account_num,password,UserfName,UserlName,balance
+		//create user account with that data
+			//create tempstring to store data from line.
+			//split the string by commas
+			//call user account constructor with the data
+		//load data into user_list
+	}
+	inputFile.close();
 }
 //called in load_accounts
 void Bank::load_manager_accounts() {
-	//some how load manager accounts from txt file
-
+	//similar to function above
 }
+
+void Bank:: find_user(int account_number) {
+	for (int i = 0; i < user_list_size; i++) {
+		
+	}
+}
+
+
+
+
 /*At this point the start page will launch
 this provide options to login as a user or manager, create a user account, or exit the app*/
 void Bank::start_page() {
-	//will server as the hub for user interaction with the bank applicaiton
+	//will serve as the hub for user interaction with the bank applicaiton
 	//will still need to add formatting to make the app look presentable
-	std::cout << "Welcome to the our bank, " << bank_name <<"!" << std::endl;
-	std::cout << "Functions:" << "Type to enact " << bank_name << std::endl;
+	std::cout << "Welcome to our bank, " << bank_name <<"!" << std::endl;
+	std::cout << "Functions:" << "Type to enact " << std::endl;
 
 	std::cout << "To sign-in as user: " << "User" << std::endl;
 	std::cout << "To create a user account: " << "Create" << std::endl;
-	std::cout << "To sign-in as manager: " << "Manage" << std::endl;
+	std::cout << "To sign-in as manager: " << "Manager" << std::endl;
 	std::cout << "To exit the applicaiton: " << "Exit" << std::endl;
 	std::string task1;
 	std::cin >> task1;
 
+	if (task1 == "User" or task1 == "user") {
+		sign_in_user();
+	}
+	else if (task1 == "Create" or task1 == "create") {
+		create_user();
+	}
+	else if (task1 == "Manager" or task1 == "manager") {
+		sign_in_manager();
+	}
+	else if (task1 == "Exit" or task1 == "exit") {
+		exit();
+	}
+	else {
+		std::cout << "You entered " << task1 << ",which is not a proper response. Returning to start..." << std::endl;
+		start_page();
+	}
+	
 
-	//sign-in either
-	//please enter account number...
-	//please enter account password...
-	//check adn validate info to sign-in
-		//valid data
-		//load their functions prompt
-		// 
-		//invalid data
-		//ask them to try again
-
-	//create an account
-	//create user
-		//please enter first name
-		//please enter last name
-	//auto provide account number (based off number of already existing accounts)
-	//auto provide account type("user")
-	//please enter the password you would like to use for your account
-	//pleae enter the starting balance for you account(assume they are able only enter positive number)
-
-	//exit call close_day()
-
+	
+	
 }
 
 void Bank::sign_in_user()
 {
+	//crete prompt to sign in with account number and password
+	//read values from user.txt
+		//compare sign-in values to known accounts
+		//success = print functions
+		//implementing functions
+			//probably create a temp user account and load in the data from the txt file
+			//do user functions on that temp account
+		//fail = print notice failed to sign-in return to start_page
 }
 
 void Bank::create_user()
 {
+	//create prompt to make account
+	//create user and add to user.txt - joseph will do
+	//accounts will be in the form account number(primary key, auto incrementing), first name, last name, balance
+	//transactions will be stored in a seperate file 
+	//probably in the form account number, starting balance, transaction type(deposit, withdrawl, ect.), amount, end balance
+	//I'm thinking we proably could tag the transaction log onto the user data in the user.txt but will leave decision up to who ever codes it
+	
+	//return to start page to sign-in
+	start_page();
 }
 
 void Bank::sign_in_manager()
 {
+	//crete prompt to sign in
+	//read values from manager.txt
+		//compare sign-in values to known accounts
+		//success = print functions
+		//implementing functions
+			//probably create a temp manager account and load in the data from the txt file
+			//do manager functions on that temp account
+		//fail = print notice failed to sign-in return to start_page
 }
 
 void Bank::exit()

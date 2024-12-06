@@ -1,15 +1,18 @@
 #pragma once
 #include <string>
-#include "Account.h"
+#include <fstream>
+#include "Account.h";
 class Bank
 {
 	
 private:
 	std::string bank_name;
 	//arrays of User account pointers thinking 20 or so
-	Account* user_list[20];
+	static int const user_list_size = 20;
+	Account* user_list[user_list_size];
 	//arrays of Manager account pointers thinking around 5, one for each of us then maybe some for testing
-	Account* manager_accounts[5];
+	static int const manager_list_size = 5;
+	Account* manager_accounts[manager_list_size];
 
 public:
 	//constructor to build a bank
@@ -22,6 +25,8 @@ public:
 	void load_user_accounts();
 	//called in load_accounts
 	void load_manager_accounts();
+
+	void find_user(int account_number);
 	/*At this point all data is loaded and 
 	the start page will launch.
 	This provide options to login as a user or manager, create a user account, or exit the app*/

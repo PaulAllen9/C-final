@@ -89,6 +89,7 @@ double UserAccount::getBalance() {
 void UserAccount::getTransactionHistory() {
 	user_log.get_history();
 }
+
 void UserAccount::getDeposits() {
 	user_log.get_deposits();
 }
@@ -101,8 +102,10 @@ void UserAccount::toString() {
 	This will give all the same information as Basic class, and balance
 	
 	*/
+	std::cout << "Account_num: " << account_num << std::endl;
 	Account::toString();
 	std::cout << "Balance: " << balance << std::endl;
+
 }
 void UserAccount::functions() {
 	/*

@@ -1,5 +1,7 @@
 #pragma once
 #include "Account.h"
+#include <string>
+#include "UserAccount.h"
 static int num_of_manager_accounts = 0;
 class Manager:public Account
 {
@@ -13,4 +15,24 @@ class Manager:public Account
 	This class should not need any new data members 
 	at least that I can think of 
 	*/
+
+	Manager();
+
+	void create_user_account();
+	void delete_user_account();
+	void view_all_user_data();
+	void view_user_data(UserAccount user_account);
+
+
+	void toString();
+	void functions();
+	double validate_number(double num);
+
+	void sign_out();
+
+	~Manager();
+	
 };
+
+
+

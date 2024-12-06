@@ -22,6 +22,9 @@ public:
 
 	
 	virtual void functions();
+
+
+	int get_account_number();
 	void setFname(std::string name);
 	std::string getFname();
 	void setLname(std::string name);
