@@ -36,9 +36,12 @@ public:
 	void start_page();
 
 	void sign_in_user();
+	
+	void sign_in_manager();
 	void create_user();
 	void delete_user(int account_number);
-	void sign_in_manager();
+	void view_all_user_data();
+	void view_user_data(int account_number);
 	void exit();
 
 

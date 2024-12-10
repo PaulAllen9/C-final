@@ -215,6 +215,19 @@ void Bank::delete_user(int account_number) {
 		}
 	}
 }
+void Bank::view_all_user_data() {
+	//prints a list of all user data
+	for (int i = 0; i < user_list_size; ++i) {
+		user_list[i]->toString();
+	}
+}
+void Bank::view_user_data(int account_number) {
+	for (int i = 0; i < user_list_size; ++i) {
+		if (user_list[i] != nullptr && user_list[i]->get_account_number() == account_number) {
+			user_list[i]->toString();
+		}
+	}
+}
 
 void Bank::sign_in_manager() {
 	int accountNumber;

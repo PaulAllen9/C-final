@@ -9,8 +9,8 @@ UserAccount::UserAccount() {
 	set_account_type("User_Account");
 	num_of_user_accounts++;
 }
-UserAccount::UserAccount(int accountNumber, std::string firstName, std::string lastName, std::string password, int balance) 
-	: Account(accountNumber, firstName, lastName, password), balance(balance)
+UserAccount::UserAccount(int account_number, std::string firstName, std::string lastName, std::string password, int balance)
+	: Account(account_number, firstName, lastName, password), balance(balance)
 
 {
 	// This constructor will only ever be used to read from a txt file and store into an array
@@ -21,7 +21,7 @@ UserAccount::UserAccount(std::string firstName, std::string lastName, std::strin
 	: Account(firstName, lastName, password), balance(balance)
 
 {
-	num_of_user_accounts++
+	num_of_user_accounts++;
 }
 
 

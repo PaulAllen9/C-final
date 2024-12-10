@@ -30,8 +30,8 @@ Account::Account(std::string firstName, std::string lastName, std::string passwo
 	account_number = numb_for_account_num;
 
 }
-Account::Account(int accountNumber, std::string firstName, std::string lastName, std::string password)
-	: account_number(accountNumber), fname(firstName), lname(lastName), password(password)
+Account::Account(int account_number, std::string firstName, std::string lastName, std::string password)
+	: account_number(account_number), fname(firstName), lname(lastName), password(password)
 {
 	// If the account was already made and does not need a new account number
 	// If this is called, it is being called to read from a file
