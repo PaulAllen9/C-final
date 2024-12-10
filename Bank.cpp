@@ -1,6 +1,9 @@
 #include "Bank.h"
 #include "UserAccount.h"
 #include "Manager.h"
+#include "UserAccount.h"
+#include "Transaction.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,7 +13,21 @@
 Bank::Bank(std::string name)
 	:bank_name(name)
 	
-{
+{	// Initialize user_list
+	for (int i = 0; i < user_list_size; ++i) {
+		user_list[i] = nullptr;
+	}
+
+	// Initialize manager_accounts
+	for (int i = 0; i < manager_list_size; ++i) {
+		manager_accounts[i] = nullptr;
+	}
+
+	// Initialize transaction_list
+	for (int i = 0; i < transaction_list_size; ++i) {
+		transaction_list[i] = nullptr;
+	}
+	
 	start_day();
 }
 //starting a day in the bank will consist of loading user and manager data into system for processing
@@ -24,9 +41,10 @@ void Bank::start_day() {
 }
 //called in start day
 void Bank::load_accounts() {
-	load_user_accounts();
+	
 	load_manager_accounts();
 	load_transactions();
+	load_user_accounts();
 }
 //called in load_accounts
 void Bank::load_user_accounts() {
@@ -57,6 +75,19 @@ void Bank::load_user_accounts() {
 		user_list[index++] = new UserAccount(accountNumber, firstName, lastName, password, balance);
 	}
 	userFile.close();
+
+	for (int i = 0; i < user_list_size; ++i) {
+		if (user_list[i] != nullptr) {
+			//user_list[i]->toString();
+
+			for (int j = 0; j < transaction_list_size; ++j) {
+				if (transaction_list[j] != nullptr and transaction_list[j]->get_account_number() == user_list[i]->get_account_number()) {
+					//std::cout << "True" << std::endl;
+					dynamic_cast<UserAccount*>(user_list[i])->add_transaction(*transaction_list[j]);
+				}
+			}
+		}
+	}
 }
 //called in load_accounts
 void Bank::load_manager_accounts() {
@@ -85,7 +116,7 @@ void Bank::load_manager_accounts() {
 	managerFile.close();
 }
 void Bank::load_transactions() {
-	std::ifstream transactionFile("transaction.txt");
+	std::ifstream transactionFile("transactions.txt");
 	if (!transactionFile.is_open()) {
 		std::cout << "Couldn't open transaction file!" << std::endl;
 		return;
@@ -111,6 +142,7 @@ void Bank::load_transactions() {
 		transaction_list[index++] = new Transaction(accountNumber, type, amount, balance);
 	}
 	transactionFile.close();
+	
 }
 
 
@@ -194,9 +226,11 @@ void Bank::sign_in_user() {
 
 
 		int choice;
+
+		do{
 		std::cout << "Enter your choice: ";
 		std::cin >> choice;
-		do{
+		
 		switch (choice) {
 		case 1: {
 			double amount;
@@ -296,18 +330,65 @@ void Bank::create_user() {
 	// Return to start page
 	start_page();
 }
+// Delete user function
 void Bank::delete_user(int account_number) {
+	bool userDeleted = false;
+
+	// Delete the user from the in-memory list
 	for (int i = 0; i < user_list_size; ++i) {
 		if (user_list[i] != nullptr && user_list[i]->get_account_number() == account_number) {
 			delete user_list[i];
-			user_list[i]=nullptr;
+			user_list[i] = nullptr;
+			userDeleted = true;
+			break;
 		}
+	}
+
+	if (userDeleted) {
+		// Rewrite the user.txt file without the deleted user
+		std::ifstream infile("user.txt");
+		std::ofstream outfile("temp.txt");
+		std::string line;
+
+		while (std::getline(infile, line)) {
+			std::stringstream ss(line);
+			int accountNumber;
+			std::string firstName, lastName, password;
+			double balance;
+
+			ss >> accountNumber;
+			ss.ignore();
+			std::getline(ss, firstName, ',');
+			ss.ignore();
+			std::getline(ss, lastName, ',');
+			ss.ignore();
+			std::getline(ss, password, ',');
+			ss >> balance;
+
+			if (accountNumber != account_number) {
+				outfile << accountNumber << ", " << firstName << ", " << lastName << ", "
+					<< password << ", " << balance << std::endl;
+			}
+		}
+
+		infile.close();
+		outfile.close();
+
+		std::remove("user.txt");
+		std::rename("temp.txt", "user.txt");
+
+		std::cout << "User with account number " << account_number << " deleted.\n";
+	}
+	else {
+		std::cout << "User with account number " << account_number << " not found.\n";
 	}
 }
 void Bank::view_all_user_data() {
 	//prints a list of all user data
 	for (int i = 0; i < user_list_size; ++i) {
-		user_list[i]->toString();
+		if (user_list[i] != nullptr) {
+			dynamic_cast<UserAccount*>(user_list[i])->toString();
+		}
 	}
 }
 void Bank::view_all_transaction_data() {
@@ -331,7 +412,7 @@ void Bank::view_transaction_data(int account_number)
 	//prints a list of all user data
 	for (int i = 0; i < user_list_size; ++i) {
 		for (int j = 0; j < transaction_list_size; ++j) {
-			if (transaction_list[j] != nullptr and transaction_list[j]->get_account_number() == user_list[i]->get_account_number()) {
+			if (transaction_list[j] != nullptr and transaction_list[j]->get_account_number() == dynamic_cast<UserAccount*>(user_list[i])->get_account_number()) {
 				std::cout << transaction_list[j]->toString() << std::endl;
 			}
 			else {
@@ -347,7 +428,7 @@ void Bank::view_transaction_data(int account_number)
 void Bank::view_user_data(int account_number) {
 	for (int i = 0; i < user_list_size; ++i) {
 		if (user_list[i] != nullptr && user_list[i]->get_account_number() == account_number) {
-			user_list[i]->toString();
+			dynamic_cast<UserAccount*>(user_list[i])->toString();
 		}
 	}
 }
@@ -408,7 +489,6 @@ void Bank::sign_in_manager() {
 			dynamic_cast<Manager*>(manager)->sign_out();
 			break;
 		case 6:
-			std::cout << "Signing out...\n";
 			dynamic_cast<Manager*>(manager)->functions();
 			break;
 		default:
@@ -439,5 +519,14 @@ void Bank::close_day() {
 
 
 Bank::~Bank() {
+	for (int i = 0; i < user_list_size; ++i) {
+		delete user_list[i];
+	}
+	for (int i = 0; i < manager_list_size; ++i) {
+		delete manager_accounts[i];
+	}
+	for (int i = 0; i < transaction_list_size; ++i) {
+		delete transaction_list[i];
+	}
 
 }

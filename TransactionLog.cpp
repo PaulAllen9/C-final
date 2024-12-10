@@ -1,13 +1,28 @@
 #include "TransactionLog.h"
 
 TransactionLog::TransactionLog() {
+	for (int i = 0; i < history_size; ++i) {
+		history[i] = nullptr;
+	}
 
 }
 TransactionLog::TransactionLog(int account_number)
 	:account_number(account_number)
 {
 	//I dont think we need anything here.
-	std::cout << "Default transactionLog constructor" << std::endl;
+	for (int i = 0; i < history_size; ++i) {
+		history[i] = nullptr;
+	}
+}
+void TransactionLog::add_transaction(Transaction t) {
+	if (history_pointer < history_size) {
+		history[history_pointer] = new Transaction(t); // Allocate new Transaction
+		history_pointer++;
+	}
+	else {
+		shift_log();
+		history[history_size - 1] = new Transaction(t); // Allocate new Transaction
+	}
 }
 void TransactionLog::set_account_number(int account_number)		{
 	this->account_number = account_number;
@@ -20,66 +35,51 @@ void TransactionLog::set_name(std::string name) {
 }
 
 void TransactionLog::get_deposits() {
-	//prints a list of all deposits made by a user
-	
 	for (int i = 0; i < history_size; i++) {
-		if (history[i].get_action() == "Deposit") {
+		//std::cout << "Printing..." << std::endl;
 
-			std::cout << history[i].toString() << std::endl;
+		if (history[i] != nullptr && history[i]->get_action() == "deposit") {
+			//std::cout << "inside..." << std::endl;
+
+			history[i]->printString();
 		}
 	}
 }
 void TransactionLog::get_withdrawls() {
-	//prints a list of all withdrawls made by a user
-
 	for (int i = 0; i < history_size; i++) {
-		if (history[i].get_action() == "Withdrawl") {
-
-			std::cout << history[i].toString() << std::endl;
+		if (history[i] != nullptr && history[i]->get_action() == "withdrawl") {
+			std::cout << history[i]->toString() << std::endl;
 		}
 	}
 }
+
 void TransactionLog::get_history() {
-	//prints a list of all transactions made by a user
-
 	for (int i = 0; i < history_size; i++) {
-		std::cout << history[i].toString() << std::endl;
+		if (history[i] != nullptr) {
+
+			std::cout << history[i]->toString() << std::endl;
+		}
 	}
 }
+
 void TransactionLog::withdrawl(double num) {
-	//this function will add a withdrawl to the hisrtory
-	if (history_pointer < 20) {
-		//history is less than full
-		history[history_pointer] = Transaction("Withdrawl", num);
-	}
-	else {
-		//history is full
-		//do a shift and put new data at the end
-		shift_log();
-		//replace history[history_size] with new transaction
-		history[history_size-1]= Transaction("Withdrawl", num);
-	}
-
+	add_transaction(Transaction("withdrawl", num));
 }
+
 void TransactionLog::deposit(double num) {
-	//This function will add a deposit to the history
-	if (history_pointer < 20) {
-		//history is less than full
-		history[history_pointer] = Transaction("Deposit", num);
+	add_transaction(Transaction("deposit", num));
+}
+void TransactionLog::shift_log() {
+	delete history[0]; // Delete the first element
+	for (int i = 1; i < history_size; i++) {
+		history[i - 1] = history[i];
 	}
-	else {
-		//history is full
-		//do a shift and put new data at the end
-		shift_log();
-		//replace history[history_size] with new transaction
-		history[history_size - 1] = Transaction("Deposit", num);
-	}
-
+	history[history_size - 1] = nullptr; // Set the last element to nullptr
 }
 
-void TransactionLog::shift_log() {
-	/*This function should delete the value at history[0] and then replace all values of history with the ones following it*/
-	for (int i = 1; i < history_size-1; i++) {
-		history[i - 1] = history[i];
+TransactionLog::~TransactionLog()
+{
+	for (int i = 0; i < history_size; ++i) {
+		delete history[i];
 	}
 }

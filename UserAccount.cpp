@@ -45,7 +45,7 @@ int UserAccount::deposit(double num) {
 
     std::ofstream outFile("transactions.txt", std::ios::app);
     if (outFile.is_open()) {
-        outFile << get_account_number() << "deposit" << num << balance << std::endl;
+        outFile << get_account_number() << ", " << "deposit, " << num << ", " << balance << std::endl;
         outFile.close();
     }
     else {
@@ -77,7 +77,7 @@ int UserAccount::withdraw(double num) {
 
     std::ofstream outFile("transactions.txt", std::ios::app);
     if (outFile.is_open()) {
-        outFile << get_account_number() << "withdraw" << num << balance << std::endl;
+        outFile << get_account_number() <<", " << "withdraw, " << num << ", " << balance << std::endl;
         outFile.close();
     }
     else {
@@ -112,6 +112,11 @@ double UserAccount::getBalance() {
     return balance;
 }
 
+void UserAccount::add_transaction(Transaction t)
+{
+    user_log.add_transaction(t);
+}
+
 // Get transaction history
 void UserAccount::getTransactionHistory() {
     user_log.get_history();
@@ -129,27 +134,72 @@ void UserAccount::getWithdrawls() {
 
 // Print account details
 void UserAccount::toString() {
-    std::cout << "Account_num: " << get_account_number() << std::endl;
     Account::toString();
     std::cout << "Balance: " << balance << std::endl;
 }
 
 // Print available functions
 void UserAccount::functions() {
-    Account::functions();
+    //Account::functions();
     std::cout << "1: deposit" << std::endl;
     std::cout << "2: withdraw" << std::endl;
     std::cout << "3: balance" << std::endl;
     std::cout << "4: history" << std::endl;
     std::cout << "5: deposit history" << std::endl;
     std::cout << "6: withdrawl history" << std::endl;
+    std::cout << "7: sign out" << std::endl;
+    std::cout << "8: get functions" << std::endl;
+
 }
 
 // Sign out function
 void UserAccount::sign_out() {
-    std::cout << "Signing out..." << std::endl;
-}
+    std::ifstream infile("user.txt");
+    std::ofstream outfile("temp.txt");
 
+    std::string line;
+    bool found = false;
+
+    while (std::getline(infile, line)) {
+        std::istringstream ss(line);
+        int accountNumber;
+        std::string firstName, lastName, password;
+        double balance;
+
+        ss >> accountNumber;
+        ss.ignore();
+        getline(ss, firstName, ',');
+        ss.ignore();
+        getline(ss, lastName, ',');
+        ss.ignore();
+        getline(ss, password, ',');
+        ss >> balance;
+
+        if (accountNumber == this->get_account_number()) {
+            balance = this->balance;
+            outfile << accountNumber << ", " << firstName << ", " << lastName << ", " << this->get_password() << ", " << getBalance() << std::endl;
+            found = true;
+        }
+        else {
+            outfile << accountNumber << ", " << firstName << ", " << lastName << ", " << password << ", " << balance << std::endl;
+        }
+    }
+
+    infile.close();
+    outfile.close();
+
+    if (found) {
+        std::remove("user.txt");
+        std::rename("temp.txt", "user.txt");
+        std::cout << "Sign out successful. User data updated.\n";
+    }
+    else {
+        std::remove("temp.txt");
+        std::cerr << "Account number not found. Sign out failed.\n";
+    }
+
+    std::cout << "Signing out...\n";
+}
 // Destructor
 UserAccount::~UserAccount() {
     num_of_user_accounts--;

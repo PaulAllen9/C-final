@@ -47,6 +47,8 @@ void Manager::functions() {
     std::cout << "2. Delete User Account" << std::endl;
     std::cout << "3. View All User Data" << std::endl;
     std::cout << "4. View User Data" << std::endl;
+    std::cout << "5. Get Functions" << std::endl;
+
 }
 
 double Manager::validate_number(double num) {

@@ -116,4 +116,5 @@ void Account::sign_out() {
 Account::~Account() {
 	//destroys the Account objects
 	num_of_basic_accounts--;
+	numb_for_account_num--;
 }

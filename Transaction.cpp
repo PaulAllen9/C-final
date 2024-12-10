@@ -59,7 +59,17 @@ int Transaction::get_amount() {
 std::string Transaction::toString()
 {
 	//std::string temp_str = user + ":\t" + get_date_time() + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
-	std::string temp_str = account_number + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
+	//std::cout << "toString..." << std::endl;
+
+	std::string temp_str = std::to_string(account_number) + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
+	//std::cout << "after..." << std::endl;
 
 	return temp_str;
+}
+
+void Transaction::printString()
+{
+	//std::cout << "print_string..." << std::endl;
+
+	std::cout << toString() << std::endl;
 }

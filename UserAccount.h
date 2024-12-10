@@ -1,6 +1,8 @@
 #pragma once
 #include "Account.h"
 #include "TransactionLog.h"
+#include "Transaction.h"
+
 #include <string>
 
 //inherits from account
@@ -22,6 +24,7 @@ public:
 	int withdraw(double num);
 	double getBalance();
 
+	void add_transaction(Transaction t);
 	void getTransactionHistory();
 	void getDeposits();
 	void getWithdrawls();

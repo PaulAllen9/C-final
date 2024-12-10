@@ -30,5 +30,6 @@ public:
 	int get_amount();
 	//std::string get_date_time();
 	std::string toString();
+	void printString();
 
 };
