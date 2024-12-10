@@ -13,9 +13,9 @@ private:
 public:
 
 	UserAccount();
-	UserAccount(Account account);
+	//UserAccount(Account account);
 	UserAccount(std::string firstName, std::string lastName, std::string password, int balance);
-	UserAccount(int accountNumber, std::string firstName, std::string lastName, std::string password, int balance);
+	UserAccount(int account_number, std::string firstName, std::string lastName, std::string password, int balance);
 
 
 	int deposit(double num);

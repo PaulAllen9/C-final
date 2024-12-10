@@ -2,6 +2,7 @@
 #include "Account.h"
 #include "UserAccount.h"
 #include <string>
+#include "Bank.h"
 
 static int num_of_manager_accounts = 0;
 

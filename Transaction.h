@@ -17,7 +17,7 @@ private:
 
 	//will provide the date_time in format 
 	//day_of_week, month, number_day, hour:minute:sec, year
-	std::chrono::time_point<std::chrono::system_clock> date_time;
+	//std::chrono::time_point<std::chrono::system_clock> date_time;
 
 public:
 	Transaction();
@@ -25,7 +25,7 @@ public:
 	Transaction(int amount);
 	std::string get_action();
 	int get_amount();
-	std::string get_date_time();
+	//std::string get_date_time();
 	void toString(std::string user);
 
 };

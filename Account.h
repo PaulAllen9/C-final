@@ -31,7 +31,6 @@ public:
 	std::string get_password();
 	void set_password(std::string pass);
 
-	int get_account_number();
 	void setFname(std::string name);
 	std::string getFname();
 	void setLname(std::string name);

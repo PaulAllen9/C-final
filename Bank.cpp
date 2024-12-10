@@ -9,7 +9,10 @@
 //constructor to build a bank
 Bank::Bank(std::string name)
 	:bank_name(name)
-{}
+	
+{
+	start_day();
+}
 //starting a day in the bank will consist of loading user and manager data into system for processing
 void Bank::start_day() {
 	load_accounts();
