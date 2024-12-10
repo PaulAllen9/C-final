@@ -13,6 +13,8 @@ private:
 	//arrays of Manager account pointers thinking around 5, one for each of us then maybe some for testing
 	static int const manager_list_size = 5;
 	Account* manager_accounts[manager_list_size];
+	Account* signed_in_user = nullptr;
+	Account* signed_in_manager = nullptr;
 
 public:
 	//constructor to build a bank
@@ -26,7 +28,8 @@ public:
 	//called in load_accounts
 	void load_manager_accounts();
 
-	void find_user(int account_number);
+	Account* find_user(int account_number);
+	Account* find_manager(int account_number);
 	/*At this point all data is loaded and 
 	the start page will launch.
 	This provide options to login as a user or manager, create a user account, or exit the app*/
@@ -34,6 +37,7 @@ public:
 
 	void sign_in_user();
 	void create_user();
+	void delete_user(int account_number);
 	void sign_in_manager();
 	void exit();
 

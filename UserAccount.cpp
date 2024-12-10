@@ -9,6 +9,21 @@ UserAccount::UserAccount() {
 	set_account_type("User_Account");
 	num_of_user_accounts++;
 }
+UserAccount::UserAccount(int accountNumber, std::string firstName, std::string lastName, std::string password, int balance) 
+	: Account(accountNumber, firstName, lastName, password), balance(balance)
+
+{
+	// This constructor will only ever be used to read from a txt file and store into an array
+	// It only represents accounts that were previously create
+	num_of_user_accounts++;
+}
+UserAccount::UserAccount(std::string firstName, std::string lastName, std::string password, int balance)
+	: Account(firstName, lastName, password), balance(balance)
+
+{
+	num_of_user_accounts++
+}
+
 
 int UserAccount::deposit(double num) {
 	/*
@@ -102,7 +117,7 @@ void UserAccount::toString() {
 	This will give all the same information as Basic class, and balance
 	
 	*/
-	std::cout << "Account_num: " << account_num << std::endl;
+	std::cout << "Account_num: " << get_account_number() << std::endl;
 	Account::toString();
 	std::cout << "Balance: " << balance << std::endl;
 

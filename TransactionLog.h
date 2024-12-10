@@ -22,9 +22,9 @@ public:
 	TransactionLog();
 	
 	void set_name(std::string name);
-	std::string get_deposits();
-	std::string get_withdrawls();
-	std::string get_history();
+	void get_deposits();
+	void get_withdrawls();
+	void get_history();
 	void withdrawl(double num);
 	void deposit(double num);
 	void shift_log();

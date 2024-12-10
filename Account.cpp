@@ -8,7 +8,7 @@ Account::Account() {
 	std::cin >> lname;
 	//create a simple password, im not worried about making something hard to guess
 	std::cout << "Please create a password: " << std::endl;
-	std::cin >> fname;
+	std::cin >> password;
 
 	//adds to the count of running accounts
 	num_of_basic_accounts++;
@@ -16,8 +16,37 @@ Account::Account() {
 	//will need to store in txt file and load in after loading all the accounts some how
 	//perhaps just look at the last known number and start from there?
 	numb_for_account_num++;
-	account_number == numb_for_account_num;
+	account_number = numb_for_account_num;
 }
+Account::Account(std::string firstName, std::string lastName, std::string password)
+	: fname(firstName), lname(lastName), password(password)
+{
+	//adds to the count of running accounts
+	num_of_basic_accounts++;
+	//keeps tract of how many total accounts were ever created to then create ever increasing id numbers
+	//will need to store in txt file and load in after loading all the accounts some how
+	//perhaps just look at the last known number and start from there?
+	numb_for_account_num++;
+	account_number = numb_for_account_num;
+
+}
+Account::Account(int accountNumber, std::string firstName, std::string lastName, std::string password)
+	: account_number(accountNumber), fname(firstName), lname(lastName), password(password)
+{
+	// If the account was already made and does not need a new account number
+	// If this is called, it is being called to read from a file
+	//adds to the count of running accounts
+	num_of_basic_accounts++;
+	//keeps tract of how many total accounts were ever created to then create ever increasing id numbers
+	//will need to store in txt file and load in after loading all the accounts some how
+	//perhaps just look at the last known number and start from there?
+	numb_for_account_num++;
+	account_number = numb_for_account_num;
+}
+
+
+
+
 void Account::toString() {
 	//prints all the information in an account
 	//make it when called in child class, the child class can simply continue the pattern
@@ -40,6 +69,15 @@ void Account::functions() {
 int Account::get_account_number() {
 	return account_number;
 }
+
+std::string Account::get_password() {
+	return password;
+}
+void Account::set_password(std::string pass) {
+	password = pass;
+}
+
+
 
 
 void Account::setFname(std::string name) {

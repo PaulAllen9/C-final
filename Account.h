@@ -18,11 +18,18 @@ public:
 	//I think we need to use pure virtualism here and virtualism
 	//Also might have to make another constructor for when we read from a file
 	Account();
+	Account(std::string firstName, std::string lastName, std::string password);
+	Account(int accountNumber, std::string firstName, std::string lastName, std::string password);
+
 	virtual void toString();
 
 	
 	virtual void functions();
 
+
+	int get_account_number();
+	std::string get_password();
+	void set_password(std::string pass);
 
 	int get_account_number();
 	void setFname(std::string name);
