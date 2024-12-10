@@ -5,6 +5,8 @@ Transaction::Transaction() {
 
 
 
+
+
 Transaction::Transaction(std::string action, int amount) {
 	/*
 	basic constructor takes in action and amount
@@ -14,7 +16,7 @@ Transaction::Transaction(std::string action, int amount) {
 	this->amount = amount;
 	//this->date_time = std::chrono::system_clock::now();
 }
-Transaction:: Transaction(int amount) {
+Transaction:: Transaction(double amount) {
 	//this constructor only takes in the amount.
 	//if negative represents a withdrawl
 	//if postive represents a deposit
@@ -29,6 +31,14 @@ Transaction:: Transaction(int amount) {
 	//this->date_time = std::chrono::system_clock::now();
 
 }
+Transaction::Transaction(int accountNumber, std::string type, double amount, double balance)
+	:account_number(accountNumber),action(type),amount(amount), temp_balance(balance)
+{
+}
+int Transaction::get_account_number() {
+	return account_number;
+}
+
 std::string Transaction::get_action() {
 	return action;
 }
@@ -46,10 +56,10 @@ int Transaction::get_amount() {
 //	return oss.str();
 //}
 
-void Transaction::toString(std::string user)
+std::string Transaction::toString()
 {
 	//std::string temp_str = user + ":\t" + get_date_time() + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
-	std::string temp_str = user + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
+	std::string temp_str = account_number + ":\t" + get_action() + ":\t" + std::to_string(get_amount());
 
-	std::cout << temp_str << std::endl;
+	return temp_str;
 }

@@ -1,8 +1,16 @@
 #include "TransactionLog.h"
 
 TransactionLog::TransactionLog() {
+
+}
+TransactionLog::TransactionLog(int account_number)
+	:account_number(account_number)
+{
 	//I dont think we need anything here.
 	std::cout << "Default transactionLog constructor" << std::endl;
+}
+void TransactionLog::set_account_number(int account_number)		{
+	this->account_number = account_number;
 }
 
 void TransactionLog::set_name(std::string name) {
@@ -17,7 +25,7 @@ void TransactionLog::get_deposits() {
 	for (int i = 0; i < history_size; i++) {
 		if (history[i].get_action() == "Deposit") {
 
-			history[i].toString(user);
+			std::cout << history[i].toString() << std::endl;
 		}
 	}
 }
@@ -27,7 +35,7 @@ void TransactionLog::get_withdrawls() {
 	for (int i = 0; i < history_size; i++) {
 		if (history[i].get_action() == "Withdrawl") {
 
-			history[i].toString(user);
+			std::cout << history[i].toString() << std::endl;
 		}
 	}
 }
@@ -35,7 +43,7 @@ void TransactionLog::get_history() {
 	//prints a list of all transactions made by a user
 
 	for (int i = 0; i < history_size; i++) {
-		history[i].toString(user);
+		std::cout << history[i].toString() << std::endl;
 	}
 }
 void TransactionLog::withdrawl(double num) {

@@ -26,6 +26,7 @@ void Bank::start_day() {
 void Bank::load_accounts() {
 	load_user_accounts();
 	load_manager_accounts();
+	load_transactions();
 }
 //called in load_accounts
 void Bank::load_user_accounts() {
@@ -78,12 +79,42 @@ void Bank::load_manager_accounts() {
 		ss.ignore();
 		getline(ss, lastName, ',');
 		ss.ignore();
-		getline(ss, password, ',');
-
+		ss >> password;
 		manager_accounts[index++] = new Manager(accountNumber, firstName, lastName, password);
 	}
 	managerFile.close();
 }
+void Bank::load_transactions() {
+	std::ifstream transactionFile("transaction.txt");
+	if (!transactionFile.is_open()) {
+		std::cout << "Couldn't open transaction file!" << std::endl;
+		return;
+	}
+
+	std::string transactionLine;
+	int index = 0;
+	while (getline(transactionFile, transactionLine) && index < transaction_list_size) {
+		std::stringstream ss(transactionLine);
+		int accountNumber;
+		std::string type;
+		int amount;
+		double balance;
+
+		ss >> accountNumber;
+		ss.ignore();
+		getline(ss, type, ',');
+		ss.ignore();
+		ss >> amount;
+		ss.ignore();
+		ss >> balance;
+
+		transaction_list[index++] = new Transaction(accountNumber, type, amount, balance);
+	}
+	transactionFile.close();
+}
+
+
+
 
 Account* Bank::find_user(int account_number) {
 	for (int i = 0; i < user_list_size; ++i) {
@@ -96,7 +127,7 @@ Account* Bank::find_user(int account_number) {
 Account* Bank::find_manager(int account_number) {
 	for (int i = 0; i < manager_list_size; ++i) {
 		if (manager_accounts[i] != nullptr && manager_accounts[i]->get_account_number() == account_number) {
-			return user_list[i];
+			return manager_accounts[i];
 		}
 	}
 	return nullptr; // Account not found points to null
@@ -119,15 +150,21 @@ void Bank::start_page() {
 
 	switch (choice) {
 	case 1:
+		std::cout << "1" << std::endl;
+
 		sign_in_user();
 		break;
 	case 2:
+		std::cout << "2" << std::endl;
 		create_user();
 		break;
 	case 3:
+		std::cout << "3" << std::endl;
 		sign_in_manager();
 		break;
 	case 4:
+		std::cout << "4" << std::endl;
+
 		exit();
 		break;
 	default:
@@ -154,6 +191,55 @@ void Bank::sign_in_user() {
 		// Proceed with user functions
 		user->functions();
 		signed_in_user = user;
+
+
+		int choice;
+		std::cout << "Enter your choice: ";
+		std::cin >> choice;
+		do{
+		switch (choice) {
+		case 1: {
+			double amount;
+			std::cout << "Enter amount to deposit: ";
+			std::cin >> amount;
+			dynamic_cast<UserAccount*>(user)->deposit(amount);
+			break;
+		}
+		case 2: {
+			double amount;
+			std::cout << "Enter amount to withdraw: ";
+			std::cin >> amount;
+			dynamic_cast<UserAccount*>(user)->withdraw(amount);
+			break;
+		}
+		case 3:
+			std::cout << "Current balance: $" << dynamic_cast<UserAccount*>(user)->getBalance() << std::endl;
+			break;
+		case 4:
+			dynamic_cast<UserAccount*>(user)->getTransactionHistory();
+			break;
+		case 5:
+			dynamic_cast<UserAccount*>(user)->getDeposits();
+			break;
+		case 6:
+			dynamic_cast<UserAccount*>(user)->getWithdrawls();
+			break;
+		case 7:
+			std::cout << "Signing out...\n";
+			dynamic_cast<UserAccount*>(user)->sign_out();
+			break;
+		case 8:
+			std::cout << "Signing out...\n";
+			dynamic_cast<UserAccount*>(user)->functions();
+			break;
+		default:
+			std::cout << "Invalid choice. Please try again.\n";
+		}
+	} while (choice != 7);
+
+	signed_in_user = nullptr;
+	start_page();
+
 	}
 	else {
 		std::cout << "Invalid account number or password." << std::endl;
@@ -224,6 +310,40 @@ void Bank::view_all_user_data() {
 		user_list[i]->toString();
 	}
 }
+void Bank::view_all_transaction_data() {
+	//prints a list of all user data
+	for (int i = 0; i < user_list_size; ++i) {
+		for (int j = 0; j < transaction_list_size; ++j) {
+			if(transaction_list[j] != nullptr) {
+				std::cout << transaction_list[j]->toString() << std::endl;
+			}
+			else {
+				if (transaction_list[j] != nullptr) {
+					break;
+				}
+			}
+		}
+	}
+}
+
+void Bank::view_transaction_data(int account_number)
+{
+	//prints a list of all user data
+	for (int i = 0; i < user_list_size; ++i) {
+		for (int j = 0; j < transaction_list_size; ++j) {
+			if (transaction_list[j] != nullptr and transaction_list[j]->get_account_number() == user_list[i]->get_account_number()) {
+				std::cout << transaction_list[j]->toString() << std::endl;
+			}
+			else {
+				if (transaction_list[j] != nullptr) {
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 void Bank::view_user_data(int account_number) {
 	for (int i = 0; i < user_list_size; ++i) {
 		if (user_list[i] != nullptr && user_list[i]->get_account_number() == account_number) {
@@ -232,26 +352,73 @@ void Bank::view_user_data(int account_number) {
 	}
 }
 
+void Bank::view_all_manager_data() {
+	//prints a list of all user data
+	for (int i = 0; i < manager_list_size; ++i) {
+		if (manager_accounts[i] != nullptr) {
+			manager_accounts[i]->toString();
+		}
+		else
+			break;
+	}
+}
+
 void Bank::sign_in_manager() {
-	int accountNumber;
+	int account_number;
 	std::string password;
 	//got rid of attempt tries because this is just a test app
 	//irl we probably would have that to avoid a password guesser hack into an account
 
 	std::cout << "Enter account number: ";
-	std::cin >> accountNumber;
+	std::cin >> account_number;
 	std::cout << "Enter password: ";
 	std::cin >> password;
 
-	Account* manager = find_manager(accountNumber);
+	Account* manager = find_manager(account_number);
 	if (manager != nullptr && manager->get_password() == password) {
 		std::cout << "Sign-in successful!" << std::endl;
 		// Proceed with user functions
 		manager->functions();
 		signed_in_manager = manager;
 
+		int choice;
+		do{
+		std::cout << "Enter your choice: ";
+		std::cin >> choice;
+
+		switch (choice) {
+		case 1:
+			dynamic_cast<Manager*>(manager)->create_user_account(this);
+			break;
+		case 2:
+			dynamic_cast<Manager*>(manager)->delete_user_account(this);
+			break;
+		case 3:
+			dynamic_cast<Manager*>(manager)->view_all_user_data(this);
+			break;
+		case 4: {
+			int user_account_number;
+			std::cout << "Enter the account number of the user: ";
+			std::cin >> user_account_number;
+			dynamic_cast<Manager*>(manager)->view_user_data(this, user_account_number);
+			break;
+		}
+		case 5:
+			std::cout << "Signing out...\n";
+			dynamic_cast<Manager*>(manager)->sign_out();
+			break;
+		case 6:
+			std::cout << "Signing out...\n";
+			dynamic_cast<Manager*>(manager)->functions();
+			break;
+		default:
+			std::cout << "Invalid choice. Please try again.\n";
+		}
+		} while (choice != 5);
+		signed_in_manager = nullptr;
+		start_page();
 	}
-	else {
+	else{
 		std::cout << "Invalid account number or password." << std::endl;
 		start_page();
 	}
@@ -266,40 +433,10 @@ void Bank::exit()
 //happens when the user selects the exit option
 //will save data then exit the terminal
 void Bank::close_day() {
-	post_accounts();
-
 	//possible other duties?
 
 }
-//called in close_day
-void Bank::post_accounts() {
-	/*puts information into the appropriate txt file*/
-	post_user_accounts();
-	post_manager_accounts();
 
-}
-//called in post_accounts
-void Bank::post_user_accounts() {
-	//reading from text file
-	std::ofstream userFile("user.txt");
-	if (!userFile.is_open()) {
-		std::cout << "Couldn't open user file!" << std::endl;
-		return;
-	}
-	/*puts user information into the txt file*/
-	userFile.close();
-}
-//called in post_accounts
-void Bank::post_manager_accounts() {
-	//reading from text file
-	std::ofstream managerFile("manager.txt");
-	if (!managerFile.is_open()) {
-		std::cout << "Couldn't open manager file!" << std::endl;
-		return;
-	}
-	/*puts manager information into the txt file*/
-	managerFile.close();
-}
 
 Bank::~Bank() {
 

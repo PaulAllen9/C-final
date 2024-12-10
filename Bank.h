@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include "Account.h";
+#include "Transaction.h"
 class Bank
 {
 	
@@ -11,10 +12,17 @@ private:
 	static int const user_list_size = 20;
 	Account* user_list[user_list_size];
 	//arrays of Manager account pointers thinking around 5, one for each of us then maybe some for testing
+
 	static int const manager_list_size = 5;
 	Account* manager_accounts[manager_list_size];
+	static int const transaction_list_size = 100;
+	Transaction* transaction_list[transaction_list_size];
+
 	Account* signed_in_user = nullptr;
 	Account* signed_in_manager = nullptr;
+
+
+
 
 public:
 	//constructor to build a bank
@@ -27,6 +35,8 @@ public:
 	void load_user_accounts();
 	//called in load_accounts
 	void load_manager_accounts();
+	void load_transactions();
+
 
 	Account* find_user(int account_number);
 	Account* find_manager(int account_number);
@@ -42,6 +52,12 @@ public:
 	void delete_user(int account_number);
 	void view_all_user_data();
 	void view_user_data(int account_number);
+	void view_all_manager_data();
+	void view_all_transaction_data();
+	void view_transaction_data(int account_number);
+
+
+
 	void exit();
 
 
