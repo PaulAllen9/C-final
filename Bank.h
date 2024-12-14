@@ -26,7 +26,7 @@ private:
 
 public:
 	//constructor to build a bank
-	Bank(std::string name);
+	Bank();
 	//starting a day in the bank will consist of loading user and manager data into system for processing
 	void start_day();
 	//called in start day

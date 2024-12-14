@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
-static int num_of_basic_accounts = 0;
+static int num_of_active_accounts = 0;
 static int numb_for_account_num = 0;
 //both the user and manager accounts will inherit from this class
 class Account
@@ -24,7 +24,7 @@ public:
 	virtual void toString();
 
 	
-	virtual void functions();
+	virtual void functions()=0;
 
 
 	int get_account_number();

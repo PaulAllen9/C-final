@@ -62,12 +62,12 @@ void TransactionLog::get_history() {
 	}
 }
 
-void TransactionLog::withdrawl(double num) {
-	add_transaction(Transaction("withdrawl", num));
+void TransactionLog::withdrawl(int account_number,double num) {
+	add_transaction(Transaction(account_number, "withdrawl", num));
 }
 
-void TransactionLog::deposit(double num) {
-	add_transaction(Transaction("deposit", num));
+void TransactionLog::deposit(int account_number, double num) {
+	add_transaction(Transaction(account_number, "deposit", num));
 }
 void TransactionLog::shift_log() {
 	delete history[0]; // Delete the first element

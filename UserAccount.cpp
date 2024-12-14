@@ -37,7 +37,7 @@ int UserAccount::deposit(double num) {
     }
 
     balance += num;
-    user_log.deposit(num);
+    user_log.deposit(get_account_number(), num);
 
     // Update the user.txt file
 
@@ -69,7 +69,7 @@ int UserAccount::withdraw(double num) {
     }
 
     balance -= num;
-    user_log.withdrawl(num);
+    user_log.withdrawl(get_account_number(), num);
 
     // Update the user.txt file
 

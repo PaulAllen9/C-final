@@ -7,7 +7,7 @@ Transaction::Transaction() {
 
 
 
-Transaction::Transaction(std::string action, int amount) {
+Transaction::Transaction(int account_number, std::string action, int amount) {
 	/*
 	basic constructor takes in action and amount
 	input validation in account class

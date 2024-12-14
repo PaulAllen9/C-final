@@ -30,8 +30,8 @@ public:
 	void get_deposits();
 	void get_withdrawls();
 	void get_history();
-	void withdrawl(double num);
-	void deposit(double num);
+	void withdrawl(int account_number, double num);
+	void deposit(int account_number, double num);
 	void shift_log();
 
 	~TransactionLog();

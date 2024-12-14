@@ -22,7 +22,7 @@ private:
 
 public:
 	Transaction();
-	Transaction(std::string action, int amount);
+	Transaction(int account_number, std::string action, int amount);
 	Transaction(double amount);
 	Transaction(int accountNumber, std::string type, double amount, double balance);
 	int get_account_number();

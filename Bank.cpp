@@ -10,10 +10,11 @@
 #include <string>
 #include <vector>
 //constructor to build a bank
-Bank::Bank(std::string name)
-	:bank_name(name)
+Bank::Bank(){	
+	bank_name = "Big Boi Bank";
 	
-{	// Initialize user_list
+	
+	// Initialize user_list
 	for (int i = 0; i < user_list_size; ++i) {
 		user_list[i] = nullptr;
 	}
@@ -27,7 +28,7 @@ Bank::Bank(std::string name)
 	for (int i = 0; i < transaction_list_size; ++i) {
 		transaction_list[i] = nullptr;
 	}
-	
+	//std::cout << "staring dat" << std::endl;
 	start_day();
 }
 //starting a day in the bank will consist of loading user and manager data into system for processing

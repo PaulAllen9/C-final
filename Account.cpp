@@ -11,7 +11,7 @@ Account::Account() {
 	std::cin >> password;
 
 	//adds to the count of running accounts
-	num_of_basic_accounts++;
+	num_of_active_accounts++;
 	//keeps tract of how many total accounts were ever created to then create ever increasing id numbers
 	//will need to store in txt file and load in after loading all the accounts some how
 	//perhaps just look at the last known number and start from there?
@@ -22,7 +22,7 @@ Account::Account(std::string firstName, std::string lastName, std::string passwo
 	: fname(firstName), lname(lastName), password(password)
 {
 	//adds to the count of running accounts
-	num_of_basic_accounts++;
+	num_of_active_accounts++;
 	//keeps tract of how many total accounts were ever created to then create ever increasing id numbers
 	//will need to store in txt file and load in after loading all the accounts some how
 	//perhaps just look at the last known number and start from there?
@@ -36,7 +36,7 @@ Account::Account(int account_number, std::string firstName, std::string lastName
 	// If the account was already made and does not need a new account number
 	// If this is called, it is being called to read from a file
 	//adds to the count of running accounts
-	num_of_basic_accounts++;
+	num_of_active_accounts++;
 	//keeps tract of how many total accounts were ever created to then create ever increasing id numbers
 	//will need to store in txt file and load in after loading all the accounts some how
 	//perhaps just look at the last known number and start from there?
@@ -55,16 +55,6 @@ void Account::toString() {
 	std::cout << "User: " << fname << " " << lname <<":" << std::endl;
 	std::cout << "Account Type: " << account_type << std::endl;
 	std::cout << "Password: " << password << std::endl;
-}
-void Account::functions() {
-	//displays a list of all the functions that account can do
-	
-	std::cout << "Function name: Enter text to start function " << std::endl;
-	//all functions allowed by user on base account
-	std::cout << "Change name: name " << std::endl;
-	std::cout << "Change first name: first " << std::endl;
-	std::cout << "Change last name: last " << std::endl;
-	std::cout << "Get Functions: Help " << std::endl;
 }
 int Account::get_account_number() {
 	return account_number;
@@ -115,6 +105,5 @@ void Account::sign_out() {
 }
 Account::~Account() {
 	//destroys the Account objects
-	num_of_basic_accounts--;
-	numb_for_account_num--;
+	num_of_active_accounts--;
 }
